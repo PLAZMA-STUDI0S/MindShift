@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor Panel</title>
+    <!-- Prism.js CSS (renklendirme) -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+    <!-- Prism.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+    <!-- Prism.js Diller (HTML, CSS, JS) -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-html.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .editor-container {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .output {
+            margin-top: 20px;
+        }
+
+        iframe {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Online Code Editor</h1>
+
+        <div class="editor-container">
+            <textarea id="codeEditor" placeholder="Write HTML, CSS or JavaScript here..."></textarea>
+        </div>
+
+        <button id="runButton">Run Code</button>
+
+        <div class="output">
+            <h2>Output:</h2>
+            <!-- Kodu burada göstereceğiz -->
+            <pre><code id="codeOutput" class="language-html"></code></pre>
+            <iframe id="outputFrame" width="100%" height="500px"></iframe>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('runButton').addEventListener('click', function() {
+            var code = document.getElementById('codeEditor').value;
+            var iframe = document.getElementById('outputFrame');
+            var output = document.getElementById('codeOutput');
+
+            // Kodun diline göre sınıf ekleme (HTML, CSS, JavaScript)
+            var languageClass = 'language-html';  // Varsayılan olarak HTML kabul ediyoruz
+            if (code.includes('<style>')) {
+                languageClass = 'language-css';
+            } else if (code.includes('<script>')) {
+                languageClass = 'language-javascript';
+            }
+
+            // Kodun renklendirilmesini sağla
+            output.textContent = code;
+            output.className = languageClass;
+            Prism.highlightElement(output);  // Prism.js ile renklendirme yap
+
+            // HTML kodunu iframe içinde çalıştır
+            var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+            iframeDocument.open();
+            iframeDocument.write(code);
+            iframeDocument.close();
+        });
+    </script>
+</body>
+</html>
